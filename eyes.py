@@ -1,9 +1,9 @@
 
 class Eyes:
-    image_left = "EyeLeft.pbm"
-    image_right = "EyeRight.pbm"
-    image_center = "EyeCenter.pbm"
-    image_closed = "EyeClosed.pbm"
+    image_left = "images/EyeLeft.pbm"
+    image_right = "images/EyeRight.pbm"
+    image_center = "images/EyeCenter.pbm"
+    image_closed = "images/EyeClosed.pbm"
     frames = [image_left, image_right, image_center, image_closed]
     left=0
     right=1
