@@ -21,8 +21,8 @@ class Oled:
         self.display.text(text, 0, 0)
         self.display.show()
 
-    def create_frames(self, frames, frame_speed):
-        self.frame_speed = frame_speed
+    def create_frames(self, frames):
+        print('Loading frames')
         for frame in frames:
             with open(frame, 'rb') as f:
                f.readline()
@@ -30,21 +30,19 @@ class Oled:
                f.readline()
                self.frames.append(bytearray(f.read()))
 
-    def next_frame(self, frame):
+    async def display_frame(self, frame, duration):
         fb = framebuf.FrameBuffer(frame, self.width, self.height, framebuf.MONO_HLSB)
         self.display.blit(fb, 0,0)
         self.display.show()
+        await uasyncio.sleep_ms(duration)
 
     async def clear(self):
         self.display.fill(0)
         self.display.show()
 
-    async def animate(self, count):
-        for i in range(count):
-            speed = 0
-            for frame in self.frames:
-                self.next_frame(frame)
-                await uasyncio.sleep_ms(self.frame_speed[speed])
-                speed = speed + 1
+    async def animate(self, animation, count = 1):
+        for loop in range(count):
+            for row in animation:
+                await self.display_frame(self.frames[row[0]], row[1])
             await self.clear()
 
