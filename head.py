@@ -15,34 +15,39 @@ class Head:
 
     async def init(self):
         await self._controller.enable_channel()
-        await self.front()
 
     async def stop(self):
         await self.front()
         await self._controller.close()
 
     async def front(self):
-        await self.move(0, 0, self._horizontal)
+        await self.face_vertical()
+        await self.face_horizontal()
+
+    async def face_vertical(self):
         await self.move(0, 0, self._vertical)
 
+    async def face_horizontal(self):
+        await self.move(0, 0, self._horizontal)
+
     async def right(self, mode):
-        await self.front()
         angle = self.get_angle(mode, False)
+        await self.face_horizontal()
         await self.move(angle, self._speed, self._horizontal)
 
     async def left(self, mode):
-        await self.front()
         angle = self.get_angle(mode, True)
+        await self.face_horizontal()
         await self.move(angle, self._speed, self._horizontal)
 
     async def down(self, mode):
-        await self.front()
-        angle = self.get_angle(mode, True)
+        angle = self.get_angle(mode, False)
+        await self.face_vertical()
         await self.move(angle, self._speed, self._vertical)
 
     async def up(self, mode):
-        await self.front()
-        angle = self.get_angle(mode, False)
+        angle = self.get_angle(mode, True)
+        await self.face_vertical()
         await self.move(angle, self._speed, self._vertical)
 
     async def move(self, angle, speed, direction):
